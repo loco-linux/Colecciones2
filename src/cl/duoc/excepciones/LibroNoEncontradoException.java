@@ -1,6 +1,6 @@
 package cl.duoc.excepciones;
 
-/*  Creado por Sebastian Olave y Jaime Barraza 
+/*  Creado por Jaime Barraza 
     para POO I - Desarrollo de aplicaciones 
     Duoc UC
 */
