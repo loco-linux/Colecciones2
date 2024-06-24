@@ -2,10 +2,7 @@
     para POO I - Desarrollo de aplicaciones 
     Duoc UC
 */
-
-
 package cl.duoc.main;
-
 
 import cl.duoc.excepciones.LibroNoEncontradoException;
 import cl.duoc.excepciones.LibroYaPrestadoException;
@@ -25,7 +22,6 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.TreeSet;
 
-
 public class Colecciones2 {
 
         static List<Libro> bibliotecaDuoc = new ArrayList<>();
@@ -35,9 +31,8 @@ public class Colecciones2 {
         static HashSet<Libro> listaNoDuplicados = new HashSet<>();
         static TreeSet<Libro> listaOrdenada = new TreeSet<>();
         
-        private static String ruta = "libros.csv";
-    
-    
+        private static final String ruta = "libros.csv";
+        
     public static void main(String[] args) throws InterruptedException, FileNotFoundException {
 
         Scanner teclado = new Scanner(System.in);
@@ -46,10 +41,10 @@ public class Colecciones2 {
         // Creo archivo CSV con los libros
         CreaCSV_inicial();
         
-        // Lee la base de datos de libros y la incorporo a las colecciones
+        // Lee la base de datos de libros y la incorpora a las colecciones
         leerLibrosCSV(ruta);
         
-        // Setea el HashMap de Usuarios con prestamos si existe
+        // Setea el HashMap de Usuarios con préstamos si existe
         SetPrestamosRealizados("info.txt");
   
 
@@ -99,7 +94,7 @@ public class Colecciones2 {
             
             case 5 -> usuarioBiblioteca.listaUsuariosPrestamo(Usuario.listaUsuarios);
                 
-            case 6 -> {
+            case 6 -> { // Al salir del programa, se guardan (o sobreescriben) los archivos para ser utilizados la próx vez que se inicie el programa
                 System.out.print("Saliendo ");
                 ReeditarLibrosCSV(ruta);
                 Usuario.infoUsuarios("info.txt");
@@ -117,7 +112,7 @@ public class Colecciones2 {
     }   
     
     private static void CreaCSV_inicial() throws InterruptedException{
-        // Metodo para crear el archivo CSV con la base de datos de libros 
+        // Método para crear el archivo CSV con la base de datos de libros 
         File file = new File(ruta);
         
         if(file.exists()){ // Corrobora si existe el archivo. Si existe, imprime que ya se encuentra disponible
@@ -149,7 +144,7 @@ public class Colecciones2 {
     }
     
     public static void leerLibrosCSV(String ruta){
-        
+        // Método que lee la base de datos de libros desde un archivo con extensión CSV
        try(BufferedReader br = new BufferedReader(new FileReader(ruta))){
            String linea;
            String separador = ",";
@@ -162,19 +157,17 @@ public class Colecciones2 {
                }
                String[] values = linea.split(separador);
                Libro libro = new Libro(
-                       values[0], // nombreLibro, 
-                       values[1], // autorLibro, 
-                       Integer.parseInt(values[2].trim()), // codigoLibro,        
+                       values[0], // nombreLibro
+                       values[1], // autorLibro
+                       Integer.parseInt(values[2].trim()), // codigoLibro        
                        values[3] // estadoLibro     
-               );
-                
+                        );            
+               // Agrega el libro a la coleccion
                 bibliotecaDuoc.add(libro);
                 listaNoDuplicados.add(libro);
                 listaOrdenada.add(libro);
-           }
-           
-           System.out.println("Libros extraidos desde "+ruta+" para operar biblioteca.\n");
-           
+           }           
+           System.out.println("Libros extraidos desde ["+ruta+"] para operar biblioteca.\n");           
        }catch(IOException e){
            e.getMessage();
        }
@@ -182,6 +175,7 @@ public class Colecciones2 {
     }
     
     private static void ReeditarLibrosCSV(String ruta){
+        // Método que Reescribe el archivo CSV con las actualizaciones de EstadoLibro realizadas durante la ejecución del programa
         File file = new File(ruta);
         
         try(FileWriter writer = new FileWriter(file)){ // cierra el writer -> writer.close();
@@ -189,19 +183,15 @@ public class Colecciones2 {
             for(Libro libro : bibliotecaDuoc){
                 String datos = libro.getNombreLibro() +","+ libro.getAutorLibro() +","+ libro.getCodigoLibro() +","+ libro.getEstadoLibro()+"\n";
                 writer.write(datos);
-            }
-            
-            writer.flush(); // limpia el buffer
-            
-            
+            }           
+            writer.flush(); // limpia el buffer                       
         } catch(IOException io){
             io.printStackTrace();
-        }
-        
+        }       
     }
     
     private static void SetPrestamosRealizados(String ruta) throws FileNotFoundException{
-                
+        // Método que Setea los préstamos (con códigos) ya realizados y los incorpora al HashMap               
        try(BufferedReader br = new BufferedReader(new FileReader(ruta))){
            String linea;
            String separador = ",";
@@ -214,25 +204,14 @@ public class Colecciones2 {
                }
                String[] values = linea.split(separador);
                
-
-
                Usuario.listaUsuarios.put(
                        Integer.parseInt(values[0]), 
                        new Usuario(values[1],Integer.parseInt(values[2]))
                     );
-               /*
-                codigoPrestamo,rutUsuario,codigoLibro
-                906653,17.294.864-2,32005
-                912006,18.169.065-8,21998
-               */
-           }
-           
+           }          
        }catch(IOException e){
            e.getMessage();
-       }
-        
-        
+       }              
     }
-    
-    
+        
 }

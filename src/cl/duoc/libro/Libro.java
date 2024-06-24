@@ -2,9 +2,7 @@
     para POO I - Desarrollo de aplicaciones 
     Duoc UC
 */
-
 package cl.duoc.libro;
-
 
 import cl.duoc.excepciones.LibroNoEncontradoException;
 import java.util.HashSet;
@@ -12,7 +10,6 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 import java.util.TreeSet;
-
 
 public class Libro implements Comparable<Libro> {
     // encapsulamiento
@@ -76,7 +73,7 @@ public class Libro implements Comparable<Libro> {
         return "Libro{" + "nombreLibro=" + nombreLibro + ", autorLibro=" + autorLibro + ", codigoLibro=" + codigoLibro + ", estadoLibro=" + estadoLibro + '}';
     }
     
-    // metodos personalizados
+    // Métodos personalizados
     public void buscarLibros(List<Libro> librosDuoc) throws LibroNoEncontradoException{ 
         int opcionUsuario=0;
         System.out.println("---------- [BUSCADOR DE LIBROS BIBLIOTECA] ----------\n");
@@ -166,9 +163,5 @@ public class Libro implements Comparable<Libro> {
     @Override
     public int compareTo(Libro o) {
         return codigoLibro - o.codigoLibro;
-    }
-
-    
-    
-    
+    }   
 }
