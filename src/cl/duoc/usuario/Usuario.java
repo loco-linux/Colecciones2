@@ -8,6 +8,9 @@ package cl.duoc.usuario;
 
 import cl.duoc.excepciones.LibroYaPrestadoException;
 import cl.duoc.libro.Libro;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.List;
@@ -32,6 +35,7 @@ public class Usuario {
         this.rut = rut;
         this.codigoPrestamo = codigoPrestamo;
     }
+    
     
     // Getters y Setters
     public String getRut() {
@@ -95,14 +99,18 @@ public class Usuario {
                     String rut = teclado.nextLine();
                         if(!rut.isEmpty()){
                         int codigoPrestamo = 100000 + (int) (Math.random() * 900000);
-                        Thread.sleep(2000); // pausa de 2 segundos
+                        
+                        for(int i=0; i<3; i++){ // Un mini contador para darle mayor dinamismo a la interfaz de usuario
+                            Thread.sleep(1000);
+                            System.out.print(".");
+                        }
                     
                             System.out.println("El prestamo de tu Libro ha sido registrado exitosamente!");
                             System.out.println("Codigo de prestamo: " + codigoPrestamo);
                             System.out.println("El prestamo del Libro tiene una duracion de 1 mes. Recuerda devolverlo a la Biblioteca.");
                             System.out.println("Gracias! Disfruta tu lectura y/o estudio.");
                             libro.setEstadoLibro("Ocupado");
-                            Usuario.listaUsuarios.put(codigoPrestamo, new Usuario(rut, codigoPrestamo));
+                            Usuario.listaUsuarios.put(codigoPrestamo, new Usuario(rut, libro.getCodigoLibro()));
                             break;
                         }else System.out.println("[ERROR] Debes ingresar tu rut!");
                 }  
@@ -114,17 +122,41 @@ public class Usuario {
     
     
     public void listaUsuariosPrestamo (HashMap<Integer, Usuario> listaDeUsuarios) {
+        
+        
         System.out.println("---------- [USUARIOS CON PRESTAMO DE LIBROS EN CURSO] ----------");
         System.out.println("Lista con todos los usuarios los cuales mantienen prestamos activos en nuestra biblioteca: ");
         for (Map.Entry<Integer, Usuario> entrada : listaDeUsuarios.entrySet()) {
             System.out.println("------------------------------");
             Integer key = entrada.getKey();
             Usuario value = entrada.getValue();        
-            System.out.println(">>Codigo de Prestamo: "+key+"\n>>Rut Usuario: "+value.getRut());        
+            System.out.println(">>Codigo de Prestamo: "+key+"\n>>Rut Usuario: "+value.getRut()+"\n>>Codigo Libro: " + value.getCodigoPrestamo());        
         }
         if(listaDeUsuarios.isEmpty()) System.out.println("[ERROR] Aun no se han realizado prestamos...\n");
     }
     
+    
+    public static void infoUsuarios(String ruta){
+        File file = new File(ruta);
+        
+        try(FileWriter writer = new FileWriter(file)){ // cierra el writer -> writer.close();
+            writer.write("codigoPrestamo,rutUsuario,codigoLibro\n");
+                      
+            for (Map.Entry<Integer, Usuario> entrada : Usuario.listaUsuarios.entrySet()) {
+            
+                Integer key = entrada.getKey();
+                Usuario value = entrada.getValue();  
+                String datos = key +"," + value.getRut() +","+ value.getCodigoPrestamo() + "\n";
+                writer.write(datos);
+                
+            } 
+                
+            writer.flush(); // limpia el buffer
+                      
+        } catch(IOException io){
+            io.printStackTrace();
+        }
+    }
     
 } 
     

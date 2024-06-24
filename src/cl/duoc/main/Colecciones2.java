@@ -13,6 +13,7 @@ import cl.duoc.libro.Libro;
 import cl.duoc.usuario.Usuario;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -37,11 +38,10 @@ public class Colecciones2 {
         private static String ruta = "libros.csv";
     
     
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, FileNotFoundException {
 
         Scanner teclado = new Scanner(System.in);
         int opcionUsuario = 0;
-
 
         // Creo archivo CSV con los libros
         CreaCSV_inicial();
@@ -49,6 +49,8 @@ public class Colecciones2 {
         // Lee la base de datos de libros y la incorporo a las colecciones
         leerLibrosCSV(ruta);
         
+        // Setea el HashMap de Usuarios con prestamos si existe
+        SetPrestamosRealizados("info.txt");
   
 
         // Menu   
@@ -100,6 +102,7 @@ public class Colecciones2 {
             case 6 -> {
                 System.out.print("Saliendo ");
                 ReeditarLibrosCSV(ruta);
+                Usuario.infoUsuarios("info.txt");
                 for(int i=0; i<3; i++){ // Un mini contador para darle mayor dinamismo a la interfaz de usuario
                     Thread.sleep(1000);
                     System.out.print(".");
@@ -194,6 +197,40 @@ public class Colecciones2 {
         } catch(IOException io){
             io.printStackTrace();
         }
+        
+    }
+    
+    private static void SetPrestamosRealizados(String ruta) throws FileNotFoundException{
+                
+       try(BufferedReader br = new BufferedReader(new FileReader(ruta))){
+           String linea;
+           String separador = ",";
+           boolean esPrimeraLinea = true;
+           
+           while((linea = br.readLine()) != null){
+               if(esPrimeraLinea){
+                   esPrimeraLinea = false;
+                   continue;
+               }
+               String[] values = linea.split(separador);
+               
+
+
+               Usuario.listaUsuarios.put(
+                       Integer.parseInt(values[0]), 
+                       new Usuario(values[1],Integer.parseInt(values[2]))
+                    );
+               /*
+                codigoPrestamo,rutUsuario,codigoLibro
+                906653,17.294.864-2,32005
+                912006,18.169.065-8,21998
+               */
+           }
+           
+       }catch(IOException e){
+           e.getMessage();
+       }
+        
         
     }
     
