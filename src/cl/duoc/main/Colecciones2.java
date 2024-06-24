@@ -51,7 +51,7 @@ public class Colecciones2 {
         // Menu   
         do{
             System.out.println("""
-                                ----------=== [ BIBLIOTECA DUOC UC ] ===---------- 
+                                --------------------=== [ BIBLIOTECA DUOC UC ] ===-------------------- 
                                
                                 Bienvenido a nuestra Biblioteca. Por favor, digite la opcion deseada: 
                                 [1] BUSCAR Libros en nuestra Biblioteca DUOC UC.

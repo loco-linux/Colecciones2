@@ -16,8 +16,8 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class Usuario {
-    private String rut;
-    private int codigoPrestamo;
+    private String  rut;
+    private int     codigoPrestamo;
 
     Scanner teclado = new Scanner(System.in);
     public static HashMap<Integer, Usuario> listaUsuarios = new HashMap<>();
@@ -91,7 +91,7 @@ public class Usuario {
                     System.out.println("[NOMBRE]        : "+libro.getNombreLibro());
                     System.out.println("[AUTOR]         : "+libro.getAutorLibro());
                     System.out.println("[CODIGO]        : "+libro.getCodigoLibro());
-                    System.out.println("Para finalizar el prestamo del Libro, por favor escribe tu rut: ");
+                    System.out.println("---> Para finalizar el prestamo del Libro, por favor escribe tu rut: ");
                     teclado.nextLine();
                     String rut = teclado.nextLine();
                     if(!rut.isEmpty()){
